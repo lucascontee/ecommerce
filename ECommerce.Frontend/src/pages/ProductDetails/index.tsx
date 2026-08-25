@@ -1,10 +1,9 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useProduct } from '@/hooks/useProducts';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { formatCurrency } from '@/utils';
+import { useProduct } from '../../hooks/useProducts';
+import { Button } from '../../components/ui/Button';
+import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
+import { formatCurrency } from '../../utils';
 import { ShoppingCart } from 'lucide-react';
 
 export default function ProductDetails() {
@@ -19,17 +18,16 @@ export default function ProductDetails() {
     function handleAddToCart() {
         const savedCart = localStorage.getItem('cart');
         let cart = savedCart ? JSON.parse(savedCart) : [];
-        const existingProductIndex = cart.findIndex((item: { productId: string }) => item.productId === product.id);
-
-        console.log(savedCart, cart, existingProductIndex);
+        const existingProductIndex = cart.findIndex((item: { productId: string }) => item.productId === product?.id);
 
         if (existingProductIndex !== -1) {
         cart[existingProductIndex].quantity += 1;
         } else {
-            cart.push({ productId: product.id, quantity: 1 });
+            cart.push({ productId: product?.id, quantity: 1 });
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
+        window.dispatchEvent(new Event('cartUpdated'));
     }
 
     return (

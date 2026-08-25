@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, User } from 'lucide-react';
 import { Button } from '../ui/Button';
@@ -7,6 +7,24 @@ import { CartDrawer } from '../cart/CartDrawer';
 
 export function Header() {
     const [isCartOpen, setIsCartOpen] = useState(false);
+
+    const [cartCount, setCartCount] = useState(0);
+
+    function loadCartTotal() {
+        const savedCart = localStorage.getItem('cart');
+        const cart = savedCart ? JSON.parse(savedCart) : [];
+        
+        const total = cart.reduce((acc: any, item: any) => acc + item.quantity, 0);
+        setCartCount(total);
+    }
+
+    useEffect(() => {
+        loadCartTotal();
+
+        window.addEventListener('cartUpdated', loadCartTotal);
+
+        return () => window.removeEventListener('cartUpdated', loadCartTotal);
+    }, []);
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white">
@@ -45,7 +63,7 @@ export function Header() {
                     >
                         <ShoppingCart className="h-5 w-5" />
                         <span className="absolute top-0 right-0 h-4 w-4 rounded-full bg-blue-600 text-[10px] font-bold text-white flex items-center justify-center">
-                            2
+                            {cartCount}
                         </span>
                     </Button>
                 </div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useProducts } from '@/hooks/useProducts';
-import { ProductCard } from '@/components/products/ProductCard';
-import { Button } from '@/components/ui/Button';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { useProducts } from '../../hooks/useProducts';
+import { ProductCard } from '../../components/products/ProductCard';
+import { Button } from '../../components/ui/Button';
+import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 
 export default function Home() {
     const { data: products, isLoading, isError } = useProducts({ limit: 8 });
