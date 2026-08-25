@@ -1,0 +1,79 @@
+# ==========================================
+# 1. Sistema Operacional
+# ==========================================
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# 2. Visual Studio, C# e .NET
+# ==========================================
+# Pastas de build e compilação
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Dd]ebug/
+[Rr]elease/
+
+# Arquivos e pastas do Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.vssscc
+
+# Pacotes do NuGet
+*.nupkg
+/packages/
+!/packages/build/
+.nuget/
+
+# Opcional: ignorar configurações de ambiente local do C#
+# appsettings.Development.json 
+# appsettings.local.json
+
+# ==========================================
+# 3. Node.js e React
+# ==========================================
+# Dependências
+node_modules/
+/.pnp
+.pnp.js
+
+# Pastas de build de produção do React
+/build/
+/dist/
+/out/
+
+# Logs de gerenciadores de pacotes
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Variáveis de ambiente locais (nunca versione credenciais)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Caches e arquivos temporários do frontend
+.eslintcache
+.parcel-cache
+.nyc_output
+.stylelintcache
+
+# ==========================================
+# 4. Visual Studio Code
+# ==========================================
+.vscode/*
+# Exceções (arquivos úteis para compartilhar com a equipe no VS Code)
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Arquivos de workspace
+*.code-workspace

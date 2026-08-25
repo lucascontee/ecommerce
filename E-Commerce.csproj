@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>E_Commerce</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ECommerce.Api\**" />
+    <Compile Remove="ECommerce.Application\**" />
+    <Compile Remove="ECommerce.Domain\**" />
+    <Compile Remove="ECommerce.Infrastructure\**" />
+    <Content Remove="ECommerce.Api\**" />
+    <Content Remove="ECommerce.Application\**" />
+    <Content Remove="ECommerce.Domain\**" />
+    <Content Remove="ECommerce.Infrastructure\**" />
+    <EmbeddedResource Remove="ECommerce.Api\**" />
+    <EmbeddedResource Remove="ECommerce.Application\**" />
+    <EmbeddedResource Remove="ECommerce.Domain\**" />
+    <EmbeddedResource Remove="ECommerce.Infrastructure\**" />
+    <None Remove="ECommerce.Api\**" />
+    <None Remove="ECommerce.Application\**" />
+    <None Remove="ECommerce.Domain\**" />
+    <None Remove="ECommerce.Infrastructure\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+  </ItemGroup>
+
+</Project>
