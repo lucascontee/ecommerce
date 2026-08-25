@@ -21,10 +21,22 @@ public class ProductService : IProductService
     public async Task<IEnumerable<object>> GetAllAsync()
     {
         var products = await _productRepository.GetAllAsync();
-        return products.Select(p => new ProductDto 
-        { 
-            Id = p.Id, Name = p.Name, Description = p.Description, Price = p.Price, StockQuantity = p.StockQuantity, CategoryId = p.CategoryId 
-        });
+
+        return products.Select(p => new ProductDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Description = p.Description,
+            Price = p.Price,
+            StockQuantity = p.StockQuantity,
+            CategoryId = p.CategoryId,
+            Images = p.Images?.Select(i => new ProductImageDto 
+            { 
+                Id = i.Id, 
+                Url = i.Url, 
+                IsPrimary = i.IsPrimary 
+            }).ToList() ?? new List<ProductImageDto>()
+        }); 
     }
 
     public async Task<object?> GetByIdAsync(Guid id)
@@ -33,7 +45,18 @@ public class ProductService : IProductService
         if (p == null) return null;
         return new ProductDto 
         { 
-            Id = p.Id, Name = p.Name, Description = p.Description, Price = p.Price, StockQuantity = p.StockQuantity, CategoryId = p.CategoryId 
+            Id = p.Id, 
+            Name = p.Name, 
+            Description = p.Description, 
+            Price = p.Price, 
+            StockQuantity = p.StockQuantity, 
+            CategoryId = p.CategoryId,
+            Images = p.Images?.Select(i => new ProductImageDto 
+            { 
+                Id = i.Id, 
+                Url = i.Url, 
+                IsPrimary = i.IsPrimary 
+            }).ToList() ?? new List<ProductImageDto>()
         };
     }
 

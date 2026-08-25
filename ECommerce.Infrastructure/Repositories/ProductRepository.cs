@@ -19,12 +19,14 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product?> GetByIdAsync(Guid id)
     {
-        return await _context.Set<Product>().FindAsync(id);
+        return await _context.Set<Product>()
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        return await _context.Set<Product>().ToListAsync();
+        return await _context.Set<Product>().Include(p => p.Images).ToListAsync();
     }
 
     public async Task<Product> AddAsync(Product entity)
