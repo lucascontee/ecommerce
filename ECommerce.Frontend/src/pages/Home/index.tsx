@@ -10,7 +10,6 @@ export default function Home() {
 
     return (
         <div>
-            {/* Hero Section */}
             <section className="bg-blue-600 text-white py-20">
                 <div className="container mx-auto px-4 text-center">
                     <h1 className="text-4xl md:text-6xl font-bold mb-6">Welcome to MyShop</h1>
@@ -23,7 +22,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Featured Products */}
             <section className="py-16 container mx-auto px-4">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-3xl font-bold">Featured Products</h2>

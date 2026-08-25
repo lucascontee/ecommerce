@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, User } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
+import { CartDrawer } from '../cart/CartDrawer';
 
 export function Header() {
+    const [isCartOpen, setIsCartOpen] = useState(false);
+
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
@@ -30,18 +33,28 @@ export function Header() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <Button variant="ghost" className="px-2" title="Login (Future Integration)">
+                    <Button variant="ghost" className="px-2" title="Login">
                         <User className="h-5 w-5 mr-2" />
                         <span className="hidden sm:inline">Login</span>
                     </Button>
-                    <Button variant="ghost" className="px-2 relative" title="Cart (Future Integration)">
+                    <Button 
+                        variant="ghost" 
+                        className="px-2 relative" 
+                        title="Carrinho"
+                        onClick={() => setIsCartOpen(true)}
+                    >
                         <ShoppingCart className="h-5 w-5" />
                         <span className="absolute top-0 right-0 h-4 w-4 rounded-full bg-blue-600 text-[10px] font-bold text-white flex items-center justify-center">
-                            0
+                            2
                         </span>
                     </Button>
                 </div>
             </div>
+
+            <CartDrawer 
+                isOpen={isCartOpen} 
+                onClose={() => setIsCartOpen(false)} 
+            />
         </header>
     );
 }

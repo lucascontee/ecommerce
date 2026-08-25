@@ -16,6 +16,22 @@ export default function ProductDetails() {
 
     const primaryImage = product.images?.find(i => i.isPrimary)?.url || 'https://via.placeholder.com/600?text=No+Image';
 
+    function handleAddToCart() {
+        const savedCart = localStorage.getItem('cart');
+        let cart = savedCart ? JSON.parse(savedCart) : [];
+        const existingProductIndex = cart.findIndex((item: { productId: string }) => item.productId === product.id);
+
+        console.log(savedCart, cart, existingProductIndex);
+
+        if (existingProductIndex !== -1) {
+        cart[existingProductIndex].quantity += 1;
+        } else {
+            cart.push({ productId: product.id, quantity: 1 });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -50,7 +66,7 @@ export default function ProductDetails() {
                     </div>
 
                     <div className="mt-auto pt-8 border-t">
-                        <Button size="lg" className="w-full md:w-auto text-lg" disabled={product.stockQuantity === 0}>
+                        <Button size="lg" className="w-full md:w-auto text-lg" disabled={product.stockQuantity === 0} onClick={handleAddToCart}>
                             <ShoppingCart className="mr-2 h-5 w-5" />
                             Add to Cart
                         </Button>
