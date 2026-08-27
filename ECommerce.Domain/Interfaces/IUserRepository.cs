@@ -12,4 +12,5 @@ public interface IUserRepository
     Task<User> AddAsync(User entity);
     Task UpdateAsync(User entity);
     Task DeleteAsync(Guid id);
+    Task<User?> GetByEmailAsync(string email);
 }

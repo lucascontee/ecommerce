@@ -1,7 +1,9 @@
+using ECommerce.Application.DTOs;
+using ECommerce.Application.Interfaces;
+using ECommerce.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using ECommerce.Application.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers;
 
@@ -19,6 +21,20 @@ public class UsersController : ControllerBase
     [HttpGet("{userId}/orders")]
     public async Task<IActionResult> GetUserOrders(Guid userId)
     {
+        return Ok();
+    }
+
+    [HttpPost("/register")]
+    public async Task<IActionResult> Register([FromBody] User request)
+    {
+        var createdUser = await _userService.CreateAsync(request);
+        return CreatedAtAction(nameof(Register), new { id = ((User)createdUser).Id }, createdUser);
+    }
+
+    [HttpPost("/login")]
+    public async Task<IActionResult> Login([FromBody] User request)
+    {
+
         return Ok();
     }
 }

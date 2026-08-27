@@ -1,3 +1,4 @@
+using ECommerce.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,10 +7,10 @@ namespace ECommerce.Application.Interfaces;
 
 public interface IUserService
 {
-    // Basic contract
-    Task<IEnumerable<object>> GetAllAsync();
-    Task<object?> GetByIdAsync(Guid id);
-    Task<object> CreateAsync(object dto);
-    Task UpdateAsync(Guid id, object dto);
+    Task<IEnumerable<User>> GetAllAsync();
+    Task<User?> GetByIdAsync(Guid id);
+    Task<User> CreateAsync(User dto);
+    Task UpdateAsync(Guid id, User dto);
     Task DeleteAsync(Guid id);
+    Task Login(User user);
 }

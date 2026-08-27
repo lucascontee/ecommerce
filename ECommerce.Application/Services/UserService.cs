@@ -1,15 +1,70 @@
+using ECommerce.Application.Interfaces;
+using ECommerce.Domain.Entities;
+using ECommerce.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ECommerce.Application.Interfaces;
 
 namespace ECommerce.Application.Services;
 
 public class UserService : IUserService
 {
-    public async Task<IEnumerable<object>> GetAllAsync() => await Task.FromResult(new List<object>());
-    public async Task<object?> GetByIdAsync(Guid id) => await Task.FromResult<object?>(null);
-    public async Task<object> CreateAsync(object dto) => await Task.FromResult(new object());
-    public async Task UpdateAsync(Guid id, object dto) => await Task.CompletedTask;
+    private readonly IUserRepository _userRepository;
+
+    public UserService(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
+
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return await _userRepository.GetAllAsync();
+    }
+    public async Task<User?> GetByIdAsync(Guid id)
+    {
+        return await _userRepository.GetByIdAsync(id);
+    }
+    public async Task<User> CreateAsync(User dto)
+    {
+        PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
+        var hashedPassword = passwordHasher.HashPassword(dto, dto.PasswordHash);
+
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Name = dto.Name,
+            Email = dto.Email,
+            PasswordHash = hashedPassword,
+            IsActive = true
+        };
+
+        await _userRepository.AddAsync(user);
+        return user;
+    }
+
+    public async Task UpdateAsync(Guid id, User dto) => await Task.CompletedTask;
     public async Task DeleteAsync(Guid id) => await Task.CompletedTask;
+
+    public async Task Login(User user)
+    {
+        User? dbUser = await _userRepository.GetByEmailAsync(user.Email);
+
+        if(dbUser == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
+        var result = passwordHasher.VerifyHashedPassword(dbUser, dbUser.PasswordHash, user.PasswordHash);
+
+        if (result == PasswordVerificationResult.Failed)
+        {
+            throw new Exception("Invalid password");
+        }
+
+        if (result == PasswordVerificationResult.Success)
+        {
+        }
+    }
 }
