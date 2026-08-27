@@ -1,8 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { MainLayout } from '@/components/layout/MainLayout';
-import Home from '@/pages/Home';
-import Products from '@/pages/Products';
-import ProductDetails from '@/pages/ProductDetails';
+import { MainLayout } from '../components/layout/MainLayout';
+import Home from '../pages/Home';
+import Products from '../pages/Products';
+import ProductDetails from '../pages/ProductDetails';
+
+import Login from '../pages/Auth/Login';
+import Register from '../pages/Auth/Register';
+import ForgotPassword from '../pages/Auth/ForgotPassword';
 
 export const router = createBrowserRouter([
     {
@@ -21,7 +25,18 @@ export const router = createBrowserRouter([
                 path: 'products/:id',
                 element: <ProductDetails />,
             },
-            // Note: Login, Register, Cart, Checkout routes are excluded as requested.
+            {
+                path: 'login',
+                element: <Login />,
+            },
+            {
+                path: 'register',
+                element: <Register />,
+            },
+            {
+                path: 'forgot-password',
+                element: <ForgotPassword />,
+            },
         ],
     },
 ]);

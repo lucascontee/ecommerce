@@ -51,10 +51,12 @@ export function Header() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <Button variant="ghost" className="px-2" title="Login">
-                        <User className="h-5 w-5 mr-2" />
-                        <span className="hidden sm:inline">Login</span>
-                    </Button>
+                    <Link to="/login">
+                        <Button variant="ghost" className="px-2" title="Login">
+                            <User className="h-5 w-5 mr-2" />
+                            <span className="hidden sm:inline">Login</span>
+                        </Button>
+                    </Link>
                     <Button 
                         variant="ghost" 
                         className="px-2 relative" 
