@@ -28,13 +28,57 @@ export function CartItemDisplay({ productId, quantity, onPriceLoaded }: CartItem
         };
     }, [price, quantity]);
 
+    function handleAddItem() {
+        const savedCart = localStorage.getItem('cart');
+        let cart = savedCart ? JSON.parse(savedCart) : [];
+        const existingProductIndex = cart.findIndex((item: { productId: string }) => item.productId === product?.id);
+
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].quantity += 1;
+        } else {
+            cart.push({ productId: product?.id, quantity: 1 });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.dispatchEvent(new Event('cartUpdated'));
+    }
+
+    function handleRemoveItem() {
+        const savedCart = localStorage.getItem('cart');
+        let cart = savedCart ? JSON.parse(savedCart) : [];
+        const existingProductIndex = cart.findIndex((item: { productId: string }) => item.productId === product?.id);
+
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].quantity -= 1;
+            if (cart[existingProductIndex].quantity <= 0) {
+                cart.splice(existingProductIndex, 1);
+            }
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.dispatchEvent(new Event('cartUpdated'));
+    }
+
+    function handleDeleteItem() {
+        const savedCart = localStorage.getItem('cart');
+        let cart = savedCart ? JSON.parse(savedCart) : [];
+        const existingProductIndex = cart.findIndex((item: { productId: string }) => item.productId === product?.id);   
+
+        if (existingProductIndex !== -1) {
+            cart.splice(existingProductIndex, 1);
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.dispatchEvent(new Event('cartUpdated'));
+    }
+
     return (
         <div className="flex gap-4">
             <img src={imageUrl} alt={name} className="h-20 w-20 object-cover rounded border" />
             <div className="flex-1 flex flex-col">
                 <div className="flex justify-between gap-2">
                     <h3 className="font-medium text-sm line-clamp-2">{name}</h3>
-                    <button className="text-gray-400 hover:text-red-500 mt-0.5">
+                    <button className="text-gray-400 hover:text-red-500 mt-0.5" onClick={handleDeleteItem}>
                         <Trash2 className="h-4 w-4" />
                     </button>
                 </div>
@@ -43,13 +87,13 @@ export function CartItemDisplay({ productId, quantity, onPriceLoaded }: CartItem
                 </div>
                 <div className="mt-auto flex items-center gap-3">
                     <div className="flex items-center border rounded">
-                        <button className="px-2 py-1 hover:bg-gray-100 text-gray-600">
+                        <button className="px-2 py-1 hover:bg-gray-100 text-gray-600" onClick={handleRemoveItem}>
                             <Minus className="h-3 w-3" />
                         </button>
                         <span className="text-sm px-2 text-center min-w-[30px] font-medium">
                             {quantity}
                         </span>
-                        <button className="px-2 py-1 hover:bg-gray-100 text-gray-600">
+                        <button className="px-2 py-1 hover:bg-gray-100 text-gray-600" onClick={handleAddItem}>
                             <Plus className="h-3 w-3" />
                         </button>
                     </div>

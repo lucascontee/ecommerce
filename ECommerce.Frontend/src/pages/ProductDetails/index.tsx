@@ -21,7 +21,7 @@ export default function ProductDetails() {
         const existingProductIndex = cart.findIndex((item: { productId: string }) => item.productId === product?.id);
 
         if (existingProductIndex !== -1) {
-        cart[existingProductIndex].quantity += 1;
+            cart[existingProductIndex].quantity += 1;
         } else {
             cart.push({ productId: product?.id, quantity: 1 });
         }
@@ -33,12 +33,10 @@ export default function ProductDetails() {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {/* Images */}
                 <div className="bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center min-h-[400px]">
                     <img src={primaryImage} alt={product.name} className="max-w-full max-h-full object-contain" />
                 </div>
 
-                {/* Info */}
                 <div className="flex flex-col">
                     <div className="mb-2">
                         {product.category?.name && (
@@ -68,9 +66,6 @@ export default function ProductDetails() {
                             <ShoppingCart className="mr-2 h-5 w-5" />
                             Add to Cart
                         </Button>
-                        <p className="text-xs text-gray-400 mt-2 text-center md:text-left">
-                            * Cart functionality to be implemented in a future phase.
-                        </p>
                     </div>
                 </div>
             </div>
