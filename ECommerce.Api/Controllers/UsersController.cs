@@ -24,17 +24,25 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("/register")]
+    [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] User request)
     {
         var createdUser = await _userService.CreateAsync(request);
         return CreatedAtAction(nameof(Register), new { id = ((User)createdUser).Id }, createdUser);
     }
 
-    [HttpPost("/login")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] User request)
     {
+        try
+        {
+            await _userService.Login(request);
 
-        return Ok();
+            return Ok(new { message = "Login realizado com sucesso!" });
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
     }
 }

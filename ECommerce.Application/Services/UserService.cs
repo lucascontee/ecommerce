@@ -52,7 +52,7 @@ public class UserService : IUserService
 
         if(dbUser == null)
         {
-            throw new Exception("User not found");
+            throw new Exception("As informações de login que você inseriu estão incorretas");
         }
 
         PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
@@ -60,11 +60,12 @@ public class UserService : IUserService
 
         if (result == PasswordVerificationResult.Failed)
         {
-            throw new Exception("Invalid password");
+            throw new Exception("As informações de login que você inseriu estão incorretas");
         }
 
         if (result == PasswordVerificationResult.Success)
         {
+            return;
         }
     }
 }

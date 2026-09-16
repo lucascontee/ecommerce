@@ -4,7 +4,6 @@ import { ProductCard } from '@/components/products/ProductCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 export default function Products() {
-    // In a real app, you'd manage state for filters, search, and pagination here
     const { data: products, isLoading, isError } = useProducts();
 
     return (

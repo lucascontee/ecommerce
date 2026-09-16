@@ -9,7 +9,6 @@ namespace ECommerce.Api.Controllers;
 [Route("api/[controller]")]
 public class CategoriesController : ControllerBase
 {
-    // Simplified due to missing some specific services like IAddressService, but we inject what exists
     public CategoriesController()
     {
     }

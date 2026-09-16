@@ -1,14 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLogin } from '../../hooks/useLogin';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Card } from '../../components/ui/Card';
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    
+    const { mutate: fazerLogin, isPending, isError, error } = useLogin();
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-    }
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        fazerLogin(
+            { email, passwordHash: password }, 
+            {
+                onSuccess: () => {
+                    navigate('/'); // Redireciona para a página principal
+                }
+            }
+        );
+    };
+
+    // Extrai a mensagem de erro da resposta da API (ou uma genérica)
+    const errorMessage = (error as any)?.response?.data?.message || "Email ou senha inválidos. Tente novamente.";
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -23,7 +41,13 @@ export default function Login() {
                     </p>
                 </div>
                 
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                {isError && (
+                    <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center">
+                        {errorMessage}
+                    </div>
+                )}
+
+                <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Email
@@ -32,6 +56,8 @@ export default function Login() {
                             type="email" 
                             required 
                             placeholder="seu@email.com" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     
@@ -48,6 +74,8 @@ export default function Login() {
                             type="password" 
                             required 
                             placeholder="••••••••" 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
 
@@ -63,8 +91,8 @@ export default function Login() {
                         </label>
                     </div>
 
-                    <Button type="submit" className="w-full h-11 text-base" onClick={handleSubmit}>
-                        Entrar
+                    <Button type="submit" className="w-full h-11 text-base" disabled={isPending}>            
+                        {isPending ? 'Entrando...' : 'Entrar'}
                     </Button>
                 </form>
             </Card>
