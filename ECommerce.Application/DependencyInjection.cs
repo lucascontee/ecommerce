@@ -15,6 +15,7 @@ public static class DependencyInjection
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IPaymentService, PaymentService>();
+        services.AddTransient<ITokenService, TokenService>();
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
