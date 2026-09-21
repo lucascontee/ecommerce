@@ -12,5 +12,5 @@ public interface IUserService
     Task<User> CreateAsync(User dto);
     Task UpdateAsync(Guid id, User dto);
     Task DeleteAsync(Guid id);
-    Task Login(User user);
+    Task<string> Login(User user);
 }

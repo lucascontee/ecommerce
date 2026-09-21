@@ -11,10 +11,12 @@ namespace ECommerce.Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly ITokenService _tokenService;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, ITokenService tokenService)
     {
         _userRepository = userRepository;
+        _tokenService = tokenService;
     }
 
     public async Task<IEnumerable<User>> GetAllAsync()
@@ -46,7 +48,7 @@ public class UserService : IUserService
     public async Task UpdateAsync(Guid id, User dto) => await Task.CompletedTask;
     public async Task DeleteAsync(Guid id) => await Task.CompletedTask;
 
-    public async Task Login(User user)
+    public async Task<string> Login(User user)
     {
         User? dbUser = await _userRepository.GetByEmailAsync(user.Email);
 
@@ -63,9 +65,6 @@ public class UserService : IUserService
             throw new Exception("As informações de login que você inseriu estão incorretas");
         }
 
-        if (result == PasswordVerificationResult.Success)
-        {
-            return;
-        }
+        return _tokenService.GenerateToken(dbUser);   
     }
 }

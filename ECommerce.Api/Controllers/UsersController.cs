@@ -36,9 +36,9 @@ public class UsersController : ControllerBase
     {
         try
         {
-            await _userService.Login(request);
+            var token = await _userService.Login(request);
 
-            return Ok(new { message = "Login realizado com sucesso!" });
+            return Ok(new { message = "Login realizado com sucesso!", token });
         }
         catch (Exception ex)
         {

@@ -9,7 +9,7 @@ namespace ECommerce.Api.Controllers;
 [Route("api/[controller]")]
 public class CategoriesController : ControllerBase
 {
-    public CategoriesController()
+      public CategoriesController()
     {
     }
 
