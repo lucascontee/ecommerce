@@ -12,4 +12,5 @@ public interface IOrderService
     Task<object> CreateAsync(object dto);
     Task UpdateAsync(Guid id, object dto);
     Task DeleteAsync(Guid id);
+    Task<object> CreateOrderAsync(Guid userId, DTOs.CreateOrderDto dto);
 }

@@ -3,7 +3,7 @@ import { Button } from '../ui/Button';
 import { formatCurrency } from '../../utils';
 import { useProduct } from '../../hooks/useProducts';
 import { useEffect, useState } from 'react';
-import { generatePath } from 'react-router-dom';
+import { generatePath, useNavigate } from 'react-router-dom';
 import { CartItemDisplay } from './CartItemDisplay';
 
 interface CartDrawerProps {
@@ -33,8 +33,8 @@ class CartItem {
 }
 
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-    
-const [cartItems, setCartItems] = useState<StorageCartItem[]>([]);
+    const navigate = useNavigate();
+    const [cartItems, setCartItems] = useState<StorageCartItem[]>([]);
 const [subtotal, setSubtotal] = useState(0);
 
     useEffect(() => {
@@ -101,7 +101,13 @@ const [subtotal, setSubtotal] = useState(0);
                         <p className="text-xs text-gray-500 mb-4 text-center">
                             Frete e impostos calculados no checkout.
                         </p>
-                        <Button className="w-full text-lg h-12">
+                        <Button 
+                            className="w-full text-lg h-12"
+                            onClick={() => {
+                                onClose();
+                                navigate('/checkout');
+                            }}
+                        >
                             Finalizar Compra
                         </Button>
                     </div>
