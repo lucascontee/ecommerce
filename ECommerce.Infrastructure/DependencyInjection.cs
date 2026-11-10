@@ -1,5 +1,6 @@
 using ECommerce.Domain.Interfaces;
 using ECommerce.Infrastructure.Data;
+using ECommerce.Infrastructure.Messaging;
 using ECommerce.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,9 @@ public static class DependencyInjection
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IAddressRepository, AddressRepository>();
+        
+        services.AddSingleton<EventPublisher>();
+        services.AddSingleton<ECommerce.Application.Interfaces.IEventPublisher>(sp => sp.GetRequiredService<EventPublisher>());
 
         return services;
     }

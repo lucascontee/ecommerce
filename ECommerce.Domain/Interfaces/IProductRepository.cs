@@ -12,4 +12,5 @@ public interface IProductRepository
     Task<Product> AddAsync(Product entity);
     Task UpdateAsync(Product entity);
     Task DeleteAsync(Guid id);
+    Task ReduceInventoryAsync(Guid id, int quantity);
 }

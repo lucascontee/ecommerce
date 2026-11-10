@@ -15,12 +15,18 @@ public class OrderService : IOrderService
     private readonly IOrderRepository _orderRepository;
     private readonly IProductRepository _productRepository;
     private readonly IAddressRepository _addressRepository;
+    private readonly IEventPublisher _eventPublisher;
 
-    public OrderService(IOrderRepository orderRepository, IProductRepository productRepository, IAddressRepository addressRepository)
+    public OrderService(
+        IOrderRepository orderRepository, 
+        IProductRepository productRepository, 
+        IAddressRepository addressRepository,
+        IEventPublisher eventPublisher)
     {
         _orderRepository = orderRepository;
         _productRepository = productRepository;
         _addressRepository = addressRepository;
+        _eventPublisher = eventPublisher;
     }
 
     public async Task<IEnumerable<object>> GetAllAsync() => await Task.FromResult(new List<object>());
@@ -34,7 +40,6 @@ public class OrderService : IOrderService
         if (dto.Items == null || !dto.Items.Any())
             throw new Exception("O carrinho está vazio.");
 
-        // Criar ou obter um endereço padrão (dummy) para simplificar
         var addresses = await _addressRepository.GetAllAsync();
         var address = addresses.FirstOrDefault(a => a.UserId == userId);
         if (address == null)
@@ -67,15 +72,8 @@ public class OrderService : IOrderService
         foreach (var itemDto in dto.Items)
         {
             var product = await _productRepository.GetByIdAsync(itemDto.ProductId);
-            if (product == null)
-                throw new Exception($"Produto {itemDto.ProductId} não encontrado.");
 
-            if (product.StockQuantity < itemDto.Quantity)
-                throw new Exception($"Estoque insuficiente para o produto {product.Name}. Disponível: {product.StockQuantity}");
-
-            // Deduzir estoque
-            product.StockQuantity -= itemDto.Quantity;
-            await _productRepository.UpdateAsync(product);
+            if (product == null) throw new Exception($"Produto {itemDto.ProductId} não encontrado.");
 
             var orderItem = new OrderItem
             {
@@ -93,16 +91,22 @@ public class OrderService : IOrderService
 
         order.TotalAmount = totalAmount;
 
-        // Simulando que o pagamento foi processado e aprovado com sucesso
-        order.Status = OrderStatus.Processing;
+        order.Status = OrderStatus.Pending;
 
         await _orderRepository.AddAsync(order);
+
+        var eventMessage = new 
+        {
+            OrderId = order.Id,
+            Items = order.Items.Select(i => new { i.ProductId, i.Quantity }).ToList()
+        };
+        await _eventPublisher.PublishOrderMessage(eventMessage);
 
         return new { 
             order.Id, 
             order.TotalAmount, 
             order.Status,
-            message = "Pedido criado e pago com sucesso!"
+            message = "Pedido gerado e enviado para processamento!"
         };
     }
 }

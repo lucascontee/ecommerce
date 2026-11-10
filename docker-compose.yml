@@ -1,0 +1,53 @@
+services:
+  # 1. Serviço do Banco de Dados
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DB_PASSWORD} # Lê do .env
+    ports:
+      - "1433:1433"
+    volumes:
+      - ecommerce-db-data:/var/opt/mssql # Garante que os dados não sumam
+
+  # 2. Serviço de Mensageria
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # Porta da aplicação
+      - "15672:15672" # Porta do painel visual (acesse http://localhost:15672)
+
+  # 3. Serviço da sua API
+  api:
+    build: 
+      context: . # Usa o Dockerfile que está na mesma pasta
+    container_name: ecommerce-api-container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - PRIVATE_KEY=${PRIVATE_KEY} # Lê do .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+      - rabbitmq
+
+  frontend:
+      build: 
+        context: ./ECommerce.Frontend # Caminho para a pasta do React
+      container_name: ecommerce-react
+      ports:
+        - "5173:5173"
+      volumes:
+        # Sincroniza o seu código local com o contêiner (Hot-Reload)
+        - ./ECommerce.Frontend:/app
+        # Protege a pasta node_modules do contêiner contra sobrescritas do Windows
+        - /app/node_modules
+      depends_on:
+        api:
+          condition: service_started      
+
+# Criação automática do volume para o banco de dados
+volumes:
+  ecommerce-db-data:

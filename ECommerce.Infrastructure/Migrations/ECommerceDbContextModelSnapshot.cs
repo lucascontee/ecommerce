@@ -160,6 +160,16 @@ namespace ECommerce.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Equipamentos de informática e periféricos gerais",
+                            IsActive = true,
+                            Name = "Hardware & Periféricos"
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Coupon", b =>
@@ -351,6 +361,68 @@ namespace ECommerce.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Mouse gamer sem fio ultraleve com sensor PAW3395 e conexão Tri-Mode.",
+                            IsActive = true,
+                            Name = "Darmoshark M3 Wireless",
+                            Price = 350.00m,
+                            SKU = "DM-M3-WHT",
+                            StockQuantity = 25
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Teclado mecânico sem fio 75% layout, switches Gateron Brown e retroiluminação RGB.",
+                            IsActive = true,
+                            Name = "Keychron K2 Wireless Mechanical",
+                            Price = 650.00m,
+                            SKU = "KEY-K2-RGB",
+                            StockQuantity = 15
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Monitor gamer 27 polegadas Full HD, painel IPS, 1ms de tempo de resposta e 144Hz.",
+                            IsActive = true,
+                            Name = "Monitor LG UltraGear 27'' IPS 144Hz",
+                            Price = 1499.90m,
+                            SKU = "LG-27GL650F",
+                            StockQuantity = 10
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
+                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Placa de vídeo de alta performance com arquitetura Ada Lovelace e suporte a DLSS 3.",
+                            IsActive = true,
+                            Name = "NVIDIA GeForce RTX 4070 12GB",
+                            Price = 4200.00m,
+                            SKU = "NV-RTX4070-12G",
+                            StockQuantity = 8
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-6666-6666-6666-666666666666"),
+                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Processador desktop com 6 núcleos, 12 threads e clock turbo de até 5.3GHz, soquete AM5.",
+                            IsActive = true,
+                            Name = "AMD Ryzen 5 7600X",
+                            Price = 1650.00m,
+                            SKU = "AMD-R5-7600X",
+                            StockQuantity = 30
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.ProductImage", b =>
@@ -380,6 +452,48 @@ namespace ECommerce.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("77777777-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPrimary = true,
+                            ProductId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            Url = "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?q=80&w=800&auto=format&fit=crop"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-2222-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPrimary = true,
+                            ProductId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            Url = "https://images.unsplash.com/photo-1595225476474-87563907a212?q=80&w=800&auto=format&fit=crop"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-3333-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPrimary = true,
+                            ProductId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            Url = "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=800&auto=format&fit=crop"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-4444-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPrimary = true,
+                            ProductId = new Guid("55555555-5555-5555-5555-555555555555"),
+                            Url = "https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=800&auto=format&fit=crop"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-5555-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPrimary = true,
+                            ProductId = new Guid("66666666-6666-6666-6666-666666666666"),
+                            Url = "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=800&auto=format&fit=crop"
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.User", b =>

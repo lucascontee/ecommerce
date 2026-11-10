@@ -1,7 +1,9 @@
 using ECommerce.Api.Middleware;
 using ECommerce.Application;
 using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Messaging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -19,18 +21,23 @@ builder.Services.AddCors(options =>
                       });
 });
 
+var privateKey = builder.Configuration["PRIVATE_KEY"]
+    ?? throw new InvalidOperationException("A variável de ambiente PRIVATE_KEY não foi configurada.");
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConfiguration.PrivateKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(privateKey)),
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateLifetime = true
         };
     });
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +47,15 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ECommerce.Infrastructure.Data.ECommerceDbContext>();
+    db.Database.Migrate();
+}
+
+var eventPublisher = app.Services.GetRequiredService<EventPublisher>();
+await eventPublisher.InitializeAsync();
 
 app.UseCors("react");
 

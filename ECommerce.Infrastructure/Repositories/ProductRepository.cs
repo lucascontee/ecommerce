@@ -51,4 +51,18 @@ public class ProductRepository : IProductRepository
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task ReduceInventoryAsync(Guid id, int quantity)
+    {
+        var product = await GetByIdAsync(id);
+        if (product != null && product.StockQuantity >= quantity)
+        {
+            product.StockQuantity -= quantity;
+            await UpdateAsync(product);
+        }
+        else
+        {
+            throw new InvalidOperationException("Insufficient stock or product not found.");
+        }
+    }
 }
